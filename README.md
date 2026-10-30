@@ -1,4 +1,4 @@
-# RoboCup SSL - Exercise 1
+# RoboCup exercise 1 WiSe 2627
 
 Team project: build a striker that approaches the ball, aligns, and scores as many
 goals as possible during a 90-second evaluation, first against an idle goalkeeper
