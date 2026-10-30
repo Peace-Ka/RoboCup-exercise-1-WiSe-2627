@@ -1,0 +1,24 @@
+# Downloaded simulator dependency: install from the version in README.md.
+/rSoccer/
+
+# Local environments and generated Python files.
+.venv/
+venv/
+rsoccer_venv/
+.conda/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Machine-specific package inventory, editor settings, and credentials.
+/installed-packages.txt
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
