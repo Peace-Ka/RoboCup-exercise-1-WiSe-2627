@@ -26,6 +26,32 @@ call these helpers yet, so the existing demo still runs.
 
 Member 1 starts with [the movement handoff](docs/MOVEMENT_HANDOFF.md).
 
+## Build the ZIP for the grader
+
+Run this from the repository root using Python 3.10 or newer:
+
+```sh
+python scripts/build_submission.py
+```
+
+This creates `submission/RoboCup-exercise-1-WiSe-2627.zip`. It includes the complete
+API source, strategy modules, supplied goalkeeper model, dependency requirements,
+and [grader instructions](packaging/README.md). Generated ZIPs are ignored by Git;
+all four implementors can build the same submission from the shared source.
+
+After extraction, the grader can activate an existing course rSoccer environment
+and run `python run.py --duration-seconds 90 --seed 1`. This uses the ZIP's source
+and does not require access to the team's GitHub account. A fresh environment
+needs dependencies installed as described in the included README.
+
+The current ZIP is a development snapshot containing the starter striker. Rebuild
+and retest it after implementing the actual solution. Include future learned model
+files under `src/ssl_strategy_api/` so the builder includes them automatically.
+
+The team has four equal implementors. GitHub ownership under a personal account is
+a hosting arrangement, not a statement of individual project authorship. The grader
+can run the ZIP independently of repository permissions.
+
 ## Setup for a new teammate (Windows PowerShell)
 
 Install Miniconda and Microsoft Visual Studio Build Tools with the **Desktop

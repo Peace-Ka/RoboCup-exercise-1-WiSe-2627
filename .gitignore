@@ -22,3 +22,6 @@ dist/
 !.env.example
 .DS_Store
 Thumbs.db
+
+# Rebuildable submission ZIPs.
+/submission/

@@ -1,0 +1,6 @@
+# Tested simulator source revision. Initial installation requires Git and internet.
+rsoccer-gym @ git+https://github.com/robocin/rSoccer.git@3adf7c3e89fe6d1b47431ee4099dc5ee89420415
+numpy==2.2.6
+gymnasium==1.4.0
+pygame==2.6.1
+rc-robosim==1.2
