@@ -16,6 +16,13 @@ def main() -> None:
         ROOT / "packaging/run.py": Path("run.py"),
         package / "pyproject.toml": Path("pyproject.toml"),
     }
+    files[ROOT / "docs/MOVEMENT_HANDOFF.md"] = Path("docs/MOVEMENT_HANDOFF.md")
+    files[ROOT / "docs/MOVEMENT_PRESENTATION.md"] = Path("docs/MOVEMENT_PRESENTATION.md")
+    files[ROOT / "tests/test_movement.py"] = Path("tests/test_movement.py")
+    files[ROOT / "scripts/plot_movement.py"] = Path("scripts/plot_movement.py")
+    for name in ("trajectory.csv", "summary.json", "comparison.png", "comparison.svg"):
+        relative = Path("results/movement") / name
+        files[ROOT / relative] = relative
     for source in sorted((package / "src").rglob("*")):
         if not source.is_file():
             continue
