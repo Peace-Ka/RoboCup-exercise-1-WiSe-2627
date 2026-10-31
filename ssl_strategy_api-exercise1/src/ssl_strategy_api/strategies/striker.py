@@ -13,7 +13,7 @@ from ssl_strategy_api.models import RobotIntent, TeamColor, TeamConfig, WorldSta
 class StrikerStrategy:
     """Student placeholder for Exercise 1.
 
-    Replace this strategy with your own implementation.
+    The team's striker implementation will replace this placeholder.
 
     The default behavior below is intentionally simple and deliberately not optimal:
     it demonstrates how to access the controlled robot and return a valid mapping.
@@ -25,7 +25,7 @@ class StrikerStrategy:
     def decide(self, state: WorldState, config: TeamConfig) -> Mapping[int, RobotIntent]:
         """Simple starter example for students.
 
-        You must change this strategy to implement your own striker behavior.
+        The intended striker behavior is not implemented yet.
 
         This example shows the basic structure:
         - check whether any robots are controlled
@@ -48,7 +48,7 @@ class StrikerStrategy:
             return {}
 
         # Simple motion example: move the robot in a small random-like direction.
-        # Replace this with your own strategy logic.
+        # Placeholder motion until the striker behavior is implemented.
         theta = state.frame_number * 0.1 if state.frame_number is not None else 0.0
         return {
             robot_id: RobotIntent(

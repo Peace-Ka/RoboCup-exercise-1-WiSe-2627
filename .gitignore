@@ -25,3 +25,6 @@ Thumbs.db
 
 # Rebuildable submission ZIPs.
 /submission/
+
+# Additional rendered-demo runs; canonical evidence is in results/movement/.
+/results/movement-visual/

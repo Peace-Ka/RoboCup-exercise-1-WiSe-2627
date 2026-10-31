@@ -72,10 +72,21 @@ The three team-owned strategy modules are:
 - `src/ssl_strategy_api/strategies/aiming.py`: goal targeting.
 
 This is currently a **development snapshot**, not the finished assignment solution.
-The striker is still the provided circular-motion starter and the unused movement
-helper is an implementation stub. Rebuild the ZIP after completing the strategy,
+The striker is still the provided circular-motion starter. The movement helper
+is implemented and tested but has not yet been integrated into the striker.
+Rebuild the ZIP after completing the strategy,
 and update this status before the final submission.
 
 The supplied runner is retained for comparison with course evaluation behavior.
 Its summary counts goals for either team; use the Blue/Yellow score for striker
 performance. Headless execution retains real-time pacing.
+
+## Movement-only demonstration
+
+```sh
+python -m pip install --no-deps -e .
+python -m ssl_strategy_api.run_demos.run_movement --scenario diagonal
+```
+
+The editable installation above selects this archive's source for module execution.
+The demonstration compares the course starter with the completed movement helper.

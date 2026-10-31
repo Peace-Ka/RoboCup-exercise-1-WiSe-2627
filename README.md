@@ -19,12 +19,23 @@ Member 4 runs the existing evaluation runner, records results, and reports failu
 Keep the supplied models, adapters, and evaluation runner unchanged initially.
 
 `striker.py` currently retains the supplied circular-motion placeholder.
-`movement.py` defines the agreed interface but deliberately raises
-`NotImplementedError` until Member 1 implements it. `aiming.py` supplies a working
-center-of-goal baseline for Member 3 to improve. The placeholder striker does not
-call these helpers yet, so the existing demo still runs.
+`movement.py` implements the tested position/heading controller. `aiming.py` supplies
+a center-of-goal baseline for Member 3 to improve. Member 2 can now integrate both
+helpers into the striker; the default striker does not call them yet.
 
-Member 1 starts with [the movement handoff](docs/MOVEMENT_HANDOFF.md).
+Member 1 documentation: [movement handoff](docs/MOVEMENT_HANDOFF.md) and
+[presentation notes](docs/MOVEMENT_PRESENTATION.md).
+
+Movement verification (with `rsoccer` activated):
+
+```sh
+python -m unittest discover -s tests -v
+python -m ssl_strategy_api.run_demos.run_movement --no-render --scenario all
+python -m ssl_strategy_api.run_demos.run_movement --scenario diagonal
+```
+
+The last command opens a before/after visual comparison with a marked target.
+Measured results and charts are in `results/movement/`.
 
 ## Build the ZIP for the grader
 
@@ -81,7 +92,7 @@ Conda already isolates the environment; no second virtual environment is needed.
 Each teammate installs dependencies locally. The downloaded `rSoccer/` directory
 and installed environments are excluded from this repository.
 
-Select the `rsoccer` environment's Python interpreter in your editor. Changes to
+The editor should use the `rsoccer` environment's Python interpreter. Changes to
 the course package take effect on the next run because it is installed in editable mode.
 
 ## Run
@@ -107,7 +118,7 @@ the environment automatically. They expect Miniconda under `%USERPROFILE%\minico
 
 1. Pull the latest `main` before starting a task.
 2. Create a branch, for example `git switch -c feature/movement`.
-3. Edit your assigned file, verify it, and commit with a short descriptive message.
+3. Each implementor edits their assigned file, verifies it, and commits with a short descriptive message.
 4. Push the branch and open a pull request for one teammate to review.
 5. Merge small working changes regularly; agree before changing helper signatures.
 

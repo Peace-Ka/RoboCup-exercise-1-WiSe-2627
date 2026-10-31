@@ -1,6 +1,6 @@
 # Running Exercise 1 on this machine
 
-The simulator source is in `rSoccer/`. The course framework and your strategy are in
+The simulator source is in `rSoccer/`. The course framework and team strategy are in
 `ssl_strategy_api-exercise1/`. Both packages use editable installations in the
 Miniconda environment named `rsoccer` (Python 3.10).
 
@@ -24,7 +24,7 @@ machine-specific editable paths and Conda metadata; it is not a portable require
 
 ## Run from PowerShell
 
-Open a terminal in this folder. These launchers select the environment for you:
+From a terminal in this folder, these launchers select the environment automatically:
 
 ```powershell
 # Continuous evaluation with the default idle goalkeeper (window opens).
@@ -64,13 +64,13 @@ for either side, so check the Blue/Yellow score for striker performance.
 
 ## Editor interpreter and environment
 
-Select this interpreter in your editor:
+Editor interpreter:
 
 ```text
 C:\Users\peace\miniconda3\envs\rsoccer\python.exe
 ```
 
-To activate the environment in the current PowerShell session without modifying your
+To activate the environment in the current PowerShell session without modifying the
 PowerShell profile:
 
 ```powershell
