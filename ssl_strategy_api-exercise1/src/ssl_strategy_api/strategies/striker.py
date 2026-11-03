@@ -14,17 +14,21 @@ HOW OUR ROBOT THINKS (a "state machine" = a checklist, one step at a time)
    goal. The robot drives to a spot on that line, 22 cm BEHIND the ball
    (like a football player lining up before a free kick).
 2. TURN to face the goal.
-3. CREEP FORWARD slowly until the ball almost touches the kicker.
-4. KICK once, with full power (5 m/s).
+3. CREEP FORWARD slowly (dribbler on) until the ball touches the kicker.
+4. KICK once, with full power (5 m/s), dribbler off. We only kick when
+   the ball really touches the kicker; if it is still too far away the
+   robot creeps a little closer first.
 5. WAIT a moment so we never kick twice in a row, then go and get the
    next ball.
 
 A TRICK WE FOUND BY TESTING:
 The robot has an "infrared sensor" that should say "the ball touches my
-kicker". In our tests it almost always said "no". So we measured the
-simulator ourselves: the kicker only works if the ball is closer than
-0.110 m to the robot's centre. At 0.115 m the kick does NOTHING. So the
-robot fires when the distance is 0.108 m or less. This one fix is what
+kicker". In our tests it said "no" until the very last moment, so we
+measured the simulator ourselves: the kicker only works if the ball is
+closer than 0.110 m to the robot's centre. At 0.115 m the kick does
+NOTHING. An early version fired at 0.15 m (ball still 4 cm away) and
+the robot kicked thin air. Now it fires only when the sensor says
+"contact" or the distance is 0.109 m or less. This one fix is what
 turned "robot walks up to the ball and nothing happens" into goals.
 
 =====================================================================
@@ -39,10 +43,11 @@ A. PICK THE BEST SPOT IN THE GOAL.
 B. DRIBBLE CLOSER BEFORE SHOOTING.
    A far shot takes over a second to arrive, which is plenty of time for
    the keeper to slide across. So the robot first pushes the ball
-   forward until it is about 3.3 m from the far end (still outside the
-   goal area) and shoots from there. The shot then takes about 0.3 s, so
-   the keeper has little time to react. This raised our scoring rate
-   against the keeper from about 5 goals per 16 shots to about 9 per 11.
+   forward (dribbler on) until it is about 3.3 m from the far end (still
+   outside the goal area) and shoots from there. The shot then takes
+   about 0.3 s, so the keeper has little time to react. This raised our
+   scoring rate against the keeper from about 5 goals per 16 shots to
+   about 9 per 11.
 
 With NO goalkeeper near the goal we skip A and B and just aim at the
 middle of the goal (simple and very reliable).
@@ -83,6 +88,9 @@ Extra notes:
   * Without goalkeeper, an earlier version scored 20, 20 and 16 goals on
     seeds 6, 7, 8, and 56 goals from 57 shots overall (the single miss was
     a ball spawned 0.2 m from the goal line; the shot grazed the post).
+  * Contact check: in 59 logged kicks, none was fired out of range
+    without the sensor reporting contact, and 1 kick failed (probably a
+    goalkeeper block). The ball was never lost during a dribble.
   * Results change from seed to seed. A seed that is much lower than the
     others usually means the robot got stuck for part of the run; we did
     not find the cause in every case (known weak spot).
@@ -122,6 +130,7 @@ BALL_RESPAWN_JUMP_M = 0.75      # ball teleported = the game respawned it
 KICK_RELEASE_DISTANCE_M = 0.22
 KICK_MAX_WAIT_FRAMES = 20
 KICK_RANGE_M = 0.108            # measured: kicker works up to about 0.110 m
+FIRE_RANGE_M = 0.109            # only kick when the ball touches the kicker
 GOAL_AREA_DEPTH_M = 1.0         # goal area: 1.0 m deep, 2.0 m wide
 GOAL_AREA_HALF_WIDTH_M = 1.0
 
@@ -241,6 +250,16 @@ class _BaseStrikerStrategy:
                 self._last_ball_xy = ball_xy
                 return {robot_id: carry}
 
+            # Only kick when the ball really touches the kicker. If it is still
+            # too far away (the kick would hit nothing), creep closer first.
+            if robot.infrared is not True and robot_ball_distance > FIRE_RANGE_M:
+                self.phase = self.CONTACT
+                self._last_ball_xy = ball_xy
+                creep = move_to_target(
+                    robot, ball_xy, shot_heading, max_speed_mps=CONTACT_SPEED_MPS
+                )
+                return {robot_id: self._with_dribbler(creep, True)}
+
             # KICK (a single frame of kick command, then the latch holds us).
             self.phase = self.SHOOT
             self._kick_latched = True
@@ -329,7 +348,7 @@ class _BaseStrikerStrategy:
 
     @staticmethod
     def _has_ball(infrared: Optional[bool], distance_m: float) -> bool:
-        # The infrared sensor is unreliable, so we also use the measured
+        # The infrared sensor only reports contact at the last moment, so we also use the measured
         # kick range (0.110 m): inside 0.108 m the kicker can hit the ball.
         return infrared is True or distance_m <= KICK_RANGE_M
 
@@ -451,9 +470,11 @@ class GoalkeeperAwareStrikerStrategy(_BaseStrikerStrategy):
             return None
         self._carrying = True
         self._carry_frames += 1
-        return move_to_target(
+        carry = move_to_target(
             robot, target_xy, shot_heading, max_speed_mps=self.CARRY_SPEED_MPS
         )
+        # Dribbler ON while carrying, so the ball stays on the robot.
+        return self._with_dribbler(carry, True)
 
 
 class StrikerStrategy(GoalkeeperAwareStrikerStrategy):
