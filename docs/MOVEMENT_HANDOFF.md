@@ -4,8 +4,10 @@
 
 I implemented `move_to_target()` and verified it with 18 automated tests and six
 controlled rSoccer scenarios. My controller is available for striker integration.
-The default `StrikerStrategy` still contains the supplied circular-motion starter;
-I isolated the movement demonstration from Member 2's unfinished shooting behavior.
+I originally isolated the movement demonstration before the striker was ready.
+The current `StrikerStrategy` now calls my helper and integrates the team's shooting
+and learned aiming behavior. The separate demo retains the original circular motion
+for comparison.
 
 ## The stable interface
 

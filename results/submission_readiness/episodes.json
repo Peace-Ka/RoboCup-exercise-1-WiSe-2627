@@ -1,0 +1,182 @@
+[
+  {
+    "opponent": "idle",
+    "seed": 1,
+    "terminal": "goal",
+    "simulation_seconds": 6.825
+  },
+  {
+    "opponent": "idle",
+    "seed": 2,
+    "terminal": "goal",
+    "simulation_seconds": 6.925000000000001
+  },
+  {
+    "opponent": "idle",
+    "seed": 3,
+    "terminal": "goal",
+    "simulation_seconds": 2.975
+  },
+  {
+    "opponent": "idle",
+    "seed": 4,
+    "terminal": "goal",
+    "simulation_seconds": 3.3000000000000003
+  },
+  {
+    "opponent": "idle",
+    "seed": 5,
+    "terminal": "goal",
+    "simulation_seconds": 4.65
+  },
+  {
+    "opponent": "idle",
+    "seed": 6,
+    "terminal": "goal",
+    "simulation_seconds": 5.675000000000001
+  },
+  {
+    "opponent": "idle",
+    "seed": 7,
+    "terminal": "goal",
+    "simulation_seconds": 4.05
+  },
+  {
+    "opponent": "idle",
+    "seed": 8,
+    "terminal": "goal",
+    "simulation_seconds": 4.15
+  },
+  {
+    "opponent": "idle",
+    "seed": 9,
+    "terminal": "goal",
+    "simulation_seconds": 6.025
+  },
+  {
+    "opponent": "idle",
+    "seed": 10,
+    "terminal": "goal",
+    "simulation_seconds": 4.375
+  },
+  {
+    "opponent": "rule",
+    "seed": 1,
+    "terminal": "goal",
+    "simulation_seconds": 6.125
+  },
+  {
+    "opponent": "rule",
+    "seed": 2,
+    "terminal": "goal",
+    "simulation_seconds": 11.700000000000001
+  },
+  {
+    "opponent": "rule",
+    "seed": 3,
+    "terminal": "goal",
+    "simulation_seconds": 5.4
+  },
+  {
+    "opponent": "rule",
+    "seed": 4,
+    "terminal": "goal",
+    "simulation_seconds": 4.775
+  },
+  {
+    "opponent": "rule",
+    "seed": 5,
+    "terminal": "goal",
+    "simulation_seconds": 3.825
+  },
+  {
+    "opponent": "rule",
+    "seed": 6,
+    "terminal": "goal",
+    "simulation_seconds": 7.875
+  },
+  {
+    "opponent": "rule",
+    "seed": 7,
+    "terminal": "out-of-bounds",
+    "simulation_seconds": 4.9
+  },
+  {
+    "opponent": "rule",
+    "seed": 8,
+    "terminal": "goal",
+    "simulation_seconds": 7.275
+  },
+  {
+    "opponent": "rule",
+    "seed": 9,
+    "terminal": "goal",
+    "simulation_seconds": 9.200000000000001
+  },
+  {
+    "opponent": "rule",
+    "seed": 10,
+    "terminal": "goal",
+    "simulation_seconds": 4.875
+  },
+  {
+    "opponent": "qtable",
+    "seed": 1,
+    "terminal": "goal",
+    "simulation_seconds": 9.75
+  },
+  {
+    "opponent": "qtable",
+    "seed": 2,
+    "terminal": "goal",
+    "simulation_seconds": 10.8
+  },
+  {
+    "opponent": "qtable",
+    "seed": 3,
+    "terminal": "out-of-bounds",
+    "simulation_seconds": 6.0
+  },
+  {
+    "opponent": "qtable",
+    "seed": 4,
+    "terminal": "goal",
+    "simulation_seconds": 5.275
+  },
+  {
+    "opponent": "qtable",
+    "seed": 5,
+    "terminal": "goal",
+    "simulation_seconds": 4.05
+  },
+  {
+    "opponent": "qtable",
+    "seed": 6,
+    "terminal": "goal",
+    "simulation_seconds": 6.9
+  },
+  {
+    "opponent": "qtable",
+    "seed": 7,
+    "terminal": "idle-in-opponent-goal-area",
+    "simulation_seconds": 6.275
+  },
+  {
+    "opponent": "qtable",
+    "seed": 8,
+    "terminal": "blue_goal_area_entry",
+    "simulation_seconds": 9.225
+  },
+  {
+    "opponent": "qtable",
+    "seed": 9,
+    "terminal": "goal",
+    "simulation_seconds": 8.65
+  },
+  {
+    "opponent": "qtable",
+    "seed": 10,
+    "terminal": "goal",
+    "simulation_seconds": 4.425
+  }
+]

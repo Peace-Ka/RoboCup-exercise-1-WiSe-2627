@@ -71,11 +71,18 @@ The three team-owned strategy modules are:
 - `src/ssl_strategy_api/strategies/striker.py`: approach, contact, and shooting.
 - `src/ssl_strategy_api/strategies/aiming.py`: goal targeting.
 
-This is currently a **development snapshot**, not the finished assignment solution.
-The striker is still the provided circular-motion starter. The movement helper
-is implemented and tested but has not yet been integrated into the striker.
-Rebuild the ZIP after completing the strategy,
-and update this status before the final submission.
+The default striker integrates all three modules. It approaches and aligns with
+the ball, establishes contact, carries with the dribbler enabled when appropriate,
+requests a kick only after its contact check, and recovers after ball respawns.
+
+Against a goalkeeper, `LearnedAimer` estimates goalkeeper motion parameters and ball
+speed online, then chooses among five goal targets using predicted clearance. It
+starts from priors and learns within each run. No pre-training, internet connection,
+or saved striker weights are needed at runtime. This is online model identification
+combined with a rule-based controller; it is not reinforcement learning.
+
+The `goalkeeper_q_table.npy` file belongs to the supplied opponent. It is included
+so the Q-table goalkeeper can run; it is not the team's learned striker.
 
 The supplied runner is retained for comparison with course evaluation behavior.
 Its summary counts goals for either team; use the Blue/Yellow score for striker
@@ -90,3 +97,30 @@ python -m ssl_strategy_api.run_demos.run_movement --scenario diagonal
 
 The editable installation above selects this archive's source for module execution.
 The demonstration compares the course starter with the completed movement helper.
+
+## Other opponent and verification
+
+```sh
+python run.py --duration-seconds 90 --seed 1 --yellow-strategy ssl_strategy_api.strategies.goalkeeper_rl:QTableGoalkeeperStrategy
+```
+
+For the included tests, install this archive's API without downloading dependencies
+(the existing course environment supplies the simulator):
+
+```sh
+python -m pip install --no-deps -e .
+python -m unittest discover -s tests -v
+```
+
+All 34 movement, aiming, and striker tests passed in the tested Windows Python 3.10
+environment. Member 3's earlier aiming experiment is in `results/aiming/README.md`.
+Movement measurements are in `results/movement/`. These results should not be
+interpreted as a guarantee for untested seeds or operating systems.
+
+For the final assignment evaluation, use the supplied exercise runner or the
+`StrikerStrategy` entry point in the course environment. `run.py` is a convenience
+launcher for that same evaluation runner, whose code is unchanged.
+
+The final integrated evaluation and limitations are in `docs/SUBMISSION_REVIEW.md`.
+Raw match records are in `results/submission_readiness/`. The movement presentation
+notes describe Member 1's component contribution; the review describes team performance.

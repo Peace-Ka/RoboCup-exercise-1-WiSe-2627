@@ -1,0 +1,36 @@
+{
+  "source_commit": "5273557",
+  "opponent": "rule",
+  "aiming": "learned",
+  "seed": 2,
+  "duration_requested_s": 90,
+  "elapsed_including_setup_s": 90.016,
+  "steps": 3600,
+  "blue_goals": 7,
+  "yellow_goals": 0,
+  "official_stats": {
+    "respawns_total": 8,
+    "goals": 7,
+    "out_of_bounds": 1,
+    "idle_in_opponent_goal_area": 0,
+    "blue_goal_area_entries": 1
+  },
+  "observations": {
+    "phase_APPROACH": 2111,
+    "phase_CONTACT": 1301,
+    "carrying_motion_frames": 724,
+    "phase_ALIGN": 169,
+    "phase_SHOOT": 8,
+    "kick_requests": 8,
+    "phase_RECOVER": 11
+  },
+  "decision_p95_ms": 0.827,
+  "decision_max_ms": 14.019,
+  "learned_model": {
+    "gain": 2.0,
+    "v_max_mps": 0.4,
+    "y_limit_m": 0.4,
+    "ball_speed_mps": 3.5180724516290525,
+    "keeper_samples": 57
+  }
+}

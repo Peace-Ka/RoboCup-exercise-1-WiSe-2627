@@ -18,10 +18,13 @@ ssl_strategy_api-exercise1/src/ssl_strategy_api/strategies/
 Member 4 runs the existing evaluation runner, records results, and reports failures.
 Keep the supplied models, adapters, and evaluation runner unchanged initially.
 
-`striker.py` currently retains the supplied circular-motion placeholder.
-`movement.py` implements the tested position/heading controller. `aiming.py` supplies
-a center-of-goal baseline for Member 3 to improve. Member 2 can now integrate both
-helpers into the striker; the default striker does not call them yet.
+The default `StrikerStrategy` is integrated: it uses `movement.py` for motion and
+`LearnedAimer` from `aiming.py` to select shots against a goalkeeper. It approaches,
+aligns, obtains contact, carries with the dribbler enabled when appropriate, shoots,
+and recovers after ball respawns. The aimer fits goalkeeper motion parameters
+online during a run; no pre-trained striker model or external service is required.
+This is online model identification combined with a rule-based striker, not
+reinforcement learning.
 
 Member 1 documentation: [movement handoff](docs/MOVEMENT_HANDOFF.md) and
 [presentation notes](docs/MOVEMENT_PRESENTATION.md).
@@ -36,6 +39,12 @@ python -m ssl_strategy_api.run_demos.run_movement --scenario diagonal
 
 The last command opens a before/after visual comparison with a marked target.
 Measured results and charts are in `results/movement/`.
+
+## Submission review
+
+The [submission-readiness report](docs/SUBMISSION_REVIEW.md) records the exact
+tested strategy revision, complete-match results, limitations, and improvement
+priorities. Raw evaluation logs are in `results/submission_readiness/`.
 
 ## Build the ZIP for the grader
 
@@ -55,9 +64,14 @@ and run `python run.py --duration-seconds 90 --seed 1`. This uses the ZIP's sour
 and does not require access to the team's GitHub account. A fresh environment
 needs dependencies installed as described in the included README.
 
-The current ZIP is a development snapshot containing the starter striker. Rebuild
-and retest it after implementing the actual solution. Include future learned model
+Rebuild and retest the ZIP whenever the source changes. It includes all Python
+tests under `tests/` and the aiming results notes. Include future learned model
 files under `src/ssl_strategy_api/` so the builder includes them automatically.
+The goalkeeper Q-table is a supplied opponent asset, not a trained striker model.
+
+After extraction, the grader can run `python -m pip install --no-deps -e .` and
+`python -m unittest discover -s tests -v` to verify the included tests in the course
+environment. `run.py` directly selects the extracted source without installation.
 
 The team has four equal implementors. GitHub ownership under a personal account is
 a hosting arrangement, not a statement of individual project authorship. The grader

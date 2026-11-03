@@ -1,6 +1,7 @@
 """Build a portable source submission using only Python's standard library."""
 
 from pathlib import Path
+from hashlib import sha256
 from zipfile import ZIP_DEFLATED, ZipFile
 
 
@@ -18,11 +19,19 @@ def main() -> None:
     }
     files[ROOT / "docs/MOVEMENT_HANDOFF.md"] = Path("docs/MOVEMENT_HANDOFF.md")
     files[ROOT / "docs/MOVEMENT_PRESENTATION.md"] = Path("docs/MOVEMENT_PRESENTATION.md")
-    files[ROOT / "tests/test_movement.py"] = Path("tests/test_movement.py")
+    for source in sorted((ROOT / "tests").rglob("*.py")):
+        if "__pycache__" not in source.parts:
+            files[source] = source.relative_to(ROOT)
+    files[ROOT / "results/aiming/README.md"] = Path("results/aiming/README.md")
     files[ROOT / "scripts/plot_movement.py"] = Path("scripts/plot_movement.py")
+    files[ROOT / "scripts/evaluate_readiness.py"] = Path("scripts/evaluate_readiness.py")
     for name in ("trajectory.csv", "summary.json", "comparison.png", "comparison.svg"):
         relative = Path("results/movement") / name
         files[ROOT / relative] = relative
+    files[ROOT / "docs/SUBMISSION_REVIEW.md"] = Path("docs/SUBMISSION_REVIEW.md")
+    for source in sorted((ROOT / "results/submission_readiness").rglob("*")):
+        if source.is_file():
+            files[source] = source.relative_to(ROOT)
     for source in sorted((package / "src").rglob("*")):
         if not source.is_file():
             continue
@@ -35,6 +44,9 @@ def main() -> None:
         files[source] = relative
 
     required = {
+        Path("tests/test_movement.py"),
+        Path("tests/test_aiming.py"),
+        Path("tests/test_striker.py"),
         Path("src/ssl_strategy_api/strategies/striker.py"),
         Path("src/ssl_strategy_api/strategies/movement.py"),
         Path("src/ssl_strategy_api/strategies/aiming.py"),
@@ -53,8 +65,10 @@ def main() -> None:
     with ZipFile(output, "w", compression=ZIP_DEFLATED) as archive:
         for source, relative in files.items():
             archive.write(source, (ARCHIVE_ROOT / relative).as_posix())
-    print(f"Created {output} ({len(files)} files)")
-    print("Development snapshot: rebuild and test after each strategy change.")
+    digest = sha256(output.read_bytes()).hexdigest()
+    output.with_suffix(".zip.sha256").write_text(f"{digest}  {output.name}\n", encoding="utf-8")
+    print(f"Created {output} ({len(files)} files; SHA256 {digest})")
+    print("Rebuild and test the extracted archive after each strategy change.")
 
 
 if __name__ == "__main__":
