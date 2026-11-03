@@ -106,14 +106,16 @@ HOW TO RUN IT (replace the yellow strategy to change the goalkeeper):
 
 NOTES FOR THE TEAM:
   * movement.py is not modified; all driving goes through move_to_target().
-  * aiming.py is a teammate's job. The ONE place that chooses where to
-    aim is _select_shot_target(); plug aiming.choose_target() in there.
+  * Aiming (Trick A) lives in aiming.py (MJ): _select_shot_target() calls
+    LearnedAimer, which learns the keeper model online during the match.
+    Set AIM_LEARNING = False to aim with the fixed prior model instead.
 """
 
 from math import atan2, cos, hypot, isfinite, pi, sin
 from typing import Mapping, Optional, Tuple
 
 from ssl_strategy_api.models import RobotIntent, TeamColor, TeamConfig, WorldState
+from ssl_strategy_api.strategies.aiming import LearnedAimer
 from ssl_strategy_api.strategies.movement import move_to_target
 
 
@@ -413,15 +415,16 @@ class GoalkeeperAwareStrikerStrategy(_BaseStrikerStrategy):
     crossing point at speed min(1.8, 2 * distance) m/s.
     """
 
-    KEEPER_GAIN = 2.0
-    KEEPER_MAX_SPEED_MPS = 1.8
-    KEEPER_Y_LIMIT_M = 0.4
-    AVG_BALL_SPEED_MPS = 3.5
-    SIM_DT_S = 0.025
+    AIM_LEARNING = True        # False: aim with the fixed prior keeper model
     CARRY_FIRE_DIST_M = 1.2    # kick when the ball is this close to the goal line
     CARRY_MAX_FRAMES = 240     # safety: never dribble for more than 6 seconds
     CARRY_SPEED_MPS = 0.8
     _carry_frames = 0
+
+    def __init__(self) -> None:
+        # Created once, so what it learns survives ball respawns.
+        self._aimer = LearnedAimer(learn=self.AIM_LEARNING)
+        super().__init__()
 
     def reset(self, seed=None) -> None:
         super().reset(seed)
@@ -434,33 +437,8 @@ class GoalkeeperAwareStrikerStrategy(_BaseStrikerStrategy):
         self._carry_frames = 0
 
     def _select_shot_target(self, state: WorldState, config: TeamConfig) -> Tuple[float, float]:
-        goal_x = config.attack_direction_x * state.field.length_m / 2.0
-        usable = max(0.0, state.field.goal_width_m / 2.0 - GOAL_POST_MARGIN_M)
-        lanes = [(goal_x, y) for y in (-usable, -0.5 * usable, 0.0, 0.5 * usable, usable)]
-        opponents = list(self._opponent_robots(state, config).values())
-        if state.ball is None or not opponents:
-            return goal_x, 0.0
-        keeper = opponents[0]
-        scored = [(self._lane_gap(state.ball, keeper, lane), -abs(lane[1]), lane) for lane in lanes]
-        _, _, lane = max(scored)
-        return lane
-
-    def _lane_gap(self, ball, keeper, lane) -> float:
-        """How far from the ball's path will the keeper still be on arrival?"""
-        dx = lane[0] - ball.x_m
-        plane_dx = keeper.x_m - ball.x_m
-        if abs(dx) < 1e-9 or plane_dx / dx <= 0.0:
-            return 0.0
-        frac = plane_dx / dx
-        y_cross = ball.y_m + frac * (lane[1] - ball.y_m)
-        flight_s = hypot(plane_dx, y_cross - ball.y_m) / self.AVG_BALL_SPEED_MPS
-        goal_y = max(-self.KEEPER_Y_LIMIT_M, min(self.KEEPER_Y_LIMIT_M, y_cross))
-        y = keeper.y_m
-        for _ in range(int(flight_s / self.SIM_DT_S)):
-            err = goal_y - y
-            speed = min(self.KEEPER_MAX_SPEED_MPS, self.KEEPER_GAIN * abs(err))
-            y += (speed if err > 0 else -speed) * self.SIM_DT_S
-        return abs(y_cross - y)
+        """Aiming lives in aiming.py (keeper model learned online)."""
+        return self._aimer.choose_target(state, config)
 
     def _carry_intent(self, state, config, robot, ball, target_xy, shot_heading):
         goal_x = config.attack_direction_x * state.field.length_m / 2.0
