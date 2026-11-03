@@ -121,5 +121,5 @@ trial start, so 6.375 seconds corresponds to 2.375 seconds after the change.
 | retarget | 4.941 | 2.780 | 6.375 |
 
 My diagonal comparison ended 4.84 cm from the target, versus 215.78 cm for the
-supplied circular-motion example. This is a fixed-target movement check; scoring
-performance awaits Member 2's striker integration and Member 4's evaluation.
+supplied circular-motion example. This is a fixed-target movement check. The
+integrated striker's scoring measurements are in `docs/SUBMISSION_REVIEW.md`.
