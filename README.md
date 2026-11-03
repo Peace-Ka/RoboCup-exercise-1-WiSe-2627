@@ -4,21 +4,19 @@ Team project: build a striker that approaches the ball, aligns, and scores as ma
 goals as possible during a 90-second evaluation, first against an idle goalkeeper
 and then against an active goalkeeper.
 
-## Implemented contributions
+## Where to work
 
 The strategy folder already exists at:
 
 ```text
 ssl_strategy_api-exercise1/src/ssl_strategy_api/strategies/
-    movement.py   # Member 1 implemented position and heading control
-    striker.py    # Member 2 implemented approach, contact, shooting, and recovery
-    aiming.py     # Member 3 implemented online-learned goalkeeper-aware aiming
+    movement.py   # Member 1: move to a point and control heading
+    striker.py    # Member 2: approach/contact/kick behavior
+    aiming.py     # Member 3: choose a target inside the goal
 ```
 
-Member 4's assigned responsibility is evaluation and failure analysis. The final
-review results are recorded in `docs/SUBMISSION_REVIEW.md`; those records document
-what was tested, without assigning unverified individual authorship.
-The supplied models, adapters, and evaluation runner were preserved.
+Member 4 runs the existing evaluation runner, records results, and reports failures.
+Keep the supplied models, adapters, and evaluation runner unchanged initially.
 
 The default `StrikerStrategy` is integrated: it uses `movement.py` for motion and
 `LearnedAimer` from `aiming.py` to select shots against a goalkeeper. It approaches,
