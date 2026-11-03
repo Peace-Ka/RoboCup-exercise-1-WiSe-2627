@@ -125,10 +125,9 @@ or guaranteed convergence under every collision or starting condition. I have no
 added explicit acceleration limits, velocity feedback, or braking prediction.
 Integration may expose cases that need further tuning.
 
-Member 2 has now integrated my helper during approach and contact, and Member 3
-has connected online-learned aiming. My movement measurements above remain component
-tests; the submission review reports the integrated striker's scoring performance.
-I will investigate movement-specific failures found during team evaluation.
+The next milestone is for Member 2 to call my helper during approach and contact,
+then for Member 4 to measure repeatable shooting performance. I will investigate
+movement-specific failures from those runs.
 
 ## Suggested demonstration
 
